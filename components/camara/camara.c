@@ -26,7 +26,7 @@ static camera_config_t camera_config = {
     .ledc_timer = LEDC_TIMER_0,
     .ledc_channel = LEDC_CHANNEL_0,
 
-    .pixel_format = PIXFORMAT_RGB565, //YUV422,GRAYSCALE,RGB565,JPEG
+    .pixel_format = PIXFORMAT_JPEG, //YUV422,GRAYSCALE,RGB565,JPEG
     .frame_size = FRAMESIZE_HD,    //QQVGA-UXGA, For ESP32, do not use sizes above QVGA when not JPEG. The performance of the ESP32-S series has improved a lot, but JPEG mode always gives better frame rates.
 
     .jpeg_quality = 12, //0-63, for OV series camera sensors, lower number means higher quality
@@ -43,12 +43,4 @@ esp_err_t init_camera(void)
         return err;
 
     return ESP_OK;
-}
-
-int take_picture(uint8_t *jpg_buf, size_t *jpg_size)
-{
-    camera_fb_t *pic = esp_camera_fb_get();
-    fmt2jpg(pic->buf, pic->len, pic->width, pic->height, pic->format, 80, &jpg_buf, jpg_size);
-    esp_camera_fb_return(pic);
-    return 0;
 }

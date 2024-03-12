@@ -51,4 +51,4 @@ typedef struct {
 } jpg_data_t;
 
 esp_err_t init_camera(void);
-int take_picture(uint8_t *jpg_buf, size_t *jpg_size);
+// int take_picture(void);
