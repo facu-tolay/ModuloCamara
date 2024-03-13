@@ -1,7 +1,5 @@
 #include "include/camara.h"
 
-static const char *TAG = "example:take_picture";
-
 static camera_config_t camera_config = {
     .pin_pwdn = CAM_PIN_PWDN,
     .pin_reset = CAM_PIN_RESET,
@@ -27,10 +25,10 @@ static camera_config_t camera_config = {
     .ledc_channel = LEDC_CHANNEL_0,
 
     .pixel_format = PIXFORMAT_JPEG, //YUV422,GRAYSCALE,RGB565,JPEG
-    .frame_size = FRAMESIZE_HD,    //QQVGA-UXGA, For ESP32, do not use sizes above QVGA when not JPEG. The performance of the ESP32-S series has improved a lot, but JPEG mode always gives better frame rates.
+    .frame_size = FRAMESIZE_SXGA,    //QQVGA-UXGA, For ESP32, do not use sizes above QVGA when not JPEG. The performance of the ESP32-S series has improved a lot, but JPEG mode always gives better frame rates.
 
-    .jpeg_quality = 12, //0-63, for OV series camera sensors, lower number means higher quality
-    .fb_count = 1,       //When jpeg mode is used, if fb_count more than one, the driver will work in continuous mode.
+    .jpeg_quality = 4, //0-63, for OV series camera sensors, lower number means higher quality
+    .fb_count = 2,       //When jpeg mode is used, if fb_count more than one, the driver will work in continuous mode.
     .grab_mode = CAMERA_GRAB_LATEST,
     .fb_location = CAMERA_FB_IN_PSRAM,
 };

@@ -29,7 +29,7 @@ void app_main(void)
 int take_picture(esp_mqtt_client_handle_t mqtt)
 {
     camera_fb_t *pic = esp_camera_fb_get();
-    esp_mqtt_client_publish(mqtt, "/topic/upload", (const char *)pic->buf, pic->len, 1, 0);
+    esp_mqtt_client_publish(mqtt, "/topic/upload", (const char *)pic->buf, pic->len, 0, 0);
     esp_camera_fb_return(pic);
 
     return 0;

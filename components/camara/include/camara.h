@@ -16,12 +16,8 @@
 #include <nvs_flash.h>
 #include <sys/param.h>
 #include <string.h>
-
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "mqtt_client.h"
-#include "esp_http_client.h"
-
 
 // support IDF 5.x
 #ifndef portTICK_RATE_MS
@@ -46,9 +42,4 @@
 #define CAM_PIN_HREF 23
 #define CAM_PIN_PCLK 22
 
-typedef struct {
-        uint8_t *buf;
-} jpg_data_t;
-
 esp_err_t init_camera(void);
-// int take_picture(void);

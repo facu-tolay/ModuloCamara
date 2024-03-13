@@ -6,9 +6,9 @@ esp_mqtt_client_handle_t client = NULL;
 esp_mqtt_client_handle_t mqtt_app_start(xQueueHandle* receive_queue)
 {
     esp_mqtt_client_config_t mqtt_cfg = {
-        .host = BROKER_HOST,
-        .port = BROKER_PORT,
-        .client_id = ID,
+        .host = CONFIG_BROKER_HOST,
+        .port = CONFIG_BROKER_PORT,
+        .client_id = CONFIG_ID,
     };
 
     client = esp_mqtt_client_init(&mqtt_cfg);
