@@ -12,9 +12,9 @@ def init_client():
     # mqttc.message_callback_add(__topicRobotID, on_publish_common)
     mqttc.on_message = on_message
     try:
-        mqttc.connect('localhost', 1883, 60)
+        mqttc.connect('192.168.0.87', 1883)
         mqttc.loop_start()
-        mqttc.subscribe("/topic/upload", 1)
+        mqttc.subscribe("/topic/upload", 0)
     except:
         logging.error(f'Cant connect to the broker')
 
@@ -27,7 +27,6 @@ def on_message(mqttc, obj, msg):
 
 def main():
     init_client()
-    print("AAAA")
     while 1:
         pass
 
