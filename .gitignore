@@ -56,3 +56,5 @@ build
 sdkconfig*
 managed_components
 dependencies*
+__pycache__
+*.jpeg

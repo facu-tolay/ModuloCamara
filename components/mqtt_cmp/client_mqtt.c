@@ -28,7 +28,6 @@ esp_mqtt_client_handle_t mqtt_app_start(xQueueHandle* receive_queue)
 
 void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data)
 {
-    ESP_LOGI(TAG, "Event dispatched from event loop base=%s, event_id=%d", base, event_id);
     esp_mqtt_event_handle_t event = event_data;
     int msg_id = 0;
     xQueueHandle *receive_queue = (xQueueHandle*)handler_args;

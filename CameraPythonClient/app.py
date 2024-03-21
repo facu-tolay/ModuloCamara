@@ -1,5 +1,7 @@
 import paho.mqtt.client as mqtt
 import logging
+import cv2
+import os
 from time import gmtime, strftime
 
 def init_client():
@@ -13,22 +15,29 @@ def init_client():
     mqttc.on_message = on_message
     try:
         mqttc.connect('192.168.0.87', 1883)
-        mqttc.loop_start()
         mqttc.subscribe("/topic/upload", 0)
+        mqttc.loop_forever()
     except:
-        logging.error(f'Cant connect to the broker')
+        logging.error(f'Error al establecer conexión con el broker')
 
 def on_message(mqttc, obj, msg):
     image_name = f'{strftime("%Y-%m-%d_%H:%M:%S", gmtime())}.jpeg'
-    f = open(f'{image_name}', "wb")
-    f.write(msg.payload)
-    print(f'Image Received: {image_name}')
+    receive_image(image_name, msg.payload)
+    filter_image(image_name)
+    print(f'Imagen recibida: {image_name}')
+
+def receive_image(file, payload):
+    f = open(file, "wb")
+    f.write(payload)
     f.close()
 
-def main():
-    init_client()
-    while 1:
-        pass
+def filter_image(file):
+    img = cv2.imread(file)
+    qcd = cv2.QRCodeDetector()
+    retval, decoded_info, points, straight_qrcode = qcd.detectAndDecodeMulti(img)
+    if retval == False:
+        logging.error(f'No se detectó código QR')
+        os.remove(file)
 
 if __name__ == '__main__':
-    main()
+    init_client()
