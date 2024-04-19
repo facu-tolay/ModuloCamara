@@ -5,14 +5,18 @@ import os
 import math
 import random
 import numpy as np
+import configparser
 from time import gmtime, strftime
+
+config = configparser.ConfigParser()
+config.sections()
 
 def init_client():
     mqttc = mqtt.Client()
     mqttc.on_message = on_message
     try:
-        mqttc.connect('192.168.0.87', 1883)
-        mqttc.subscribe("/topic/upload", 1)
+        mqttc.connect(config['MQTT']['HOST'], int(config['MQTT']['PORT']))
+        mqttc.subscribe(config['MQTT']['TOPIC'], 1)
         mqttc.loop_forever()
     except:
         logging.error(f'Error al establecer conexión con el broker')
@@ -34,9 +38,10 @@ def crop_and_try(img):
 
 def calculate_distance(p):
     res = math.sqrt((p.item(0)-p.item(2))**2 + (p.item(1)-p.item(3))**2)
-    focal_lenght = (316*300)/62
-    distance = (62*focal_lenght)/res
-    logging.debug(f'La distancia es: {int(distance)+random.randint(-10, 10)}mm') 
+    focal_lenght = (int(config['QR']['PPM'])*int(config['QR']['DISTANCE']))/int(config['QR']['SIZE'])
+    distance = (int(config['QR']['SIZE'])*focal_lenght)/res
+    random_error = random.randint(-int(config['QR']['ERROR']), int(config['QR']['ERROR']))
+    # logging.debug(f'La distancia es: {int(distance)+random_error}mm') 
 
 def filter_image(payload):
     try:
@@ -45,7 +50,8 @@ def filter_image(payload):
         if retval is True:
             calculate_distance(points)
         else:
-            crop_and_try(img[180:540, 320:960])
+            crop_and_try(img[int(config['PHOTO']['X1']):int(config['PHOTO']['X2']),
+                             int(config['PHOTO']['Y1']):int(config['PHOTO']['Y2'])])
     except Exception as e:
         logging.error(f'No se recibio la imagen correctamente {e}')
 
@@ -53,4 +59,5 @@ if __name__ == '__main__':
     logging.basicConfig(format='[%(asctime)s] [%(levelname)s]: %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S',
                     level=logging.DEBUG)
+    config.read('config.ini')
     init_client()
