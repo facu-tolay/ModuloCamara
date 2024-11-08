@@ -119,8 +119,10 @@ int wifi_initialize_station(void)
     ESP_ERROR_CHECK(ret);
 
     ESP_LOGI(TAG, "ESP_WIFI_MODE_STA");
-    if (wifi_initialize_connection() != 0)
+    if (wifi_initialize_connection() == ESP_FAIL)
+    {
         return ESP_FAIL;
+    }
 
     return ESP_OK;
 }
@@ -130,7 +132,9 @@ int wifi_status(void)
     wifi_ap_record_t ap_info;
 
     if (esp_wifi_sta_get_ap_info(&ap_info) == ESP_OK)
+    {
         return ESP_OK;
+    }
 
     return ESP_ERR_WIFI_NOT_CONNECT;
 }
