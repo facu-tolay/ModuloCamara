@@ -1,3 +1,0 @@
-numpy==1.25.0
-opencv-python==4.9.0.80
-paho-mqtt==1.6.1
